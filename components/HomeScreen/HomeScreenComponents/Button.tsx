@@ -7,7 +7,7 @@ function Button({pageSwitcher}: any) {
 
   return (
     <TouchableOpacity
-        onPress={()=>{pageSwitcher('Home')}}
+        onPress={()=>{pageSwitcher('Guide')}}
         style={styles.button}
     >
         <LinearGradient

@@ -11,20 +11,7 @@ export type PageChangerParams = {
 
 export type RootStackParamList = {
   Home: undefined;
-  LogIn: undefined;
-  SignUp: undefined;
-  Main: undefined;
-  Excercises: { description: string };
-  NewFlashcard: undefined;
-  FlashcardsList: { range: string };
-  FlashcardsSet: { id: number };
-  Auth: undefined;
-  Notes: undefined
-  CreatePost: undefined
-  UserExercises: {description: string}
-  PostByCategory: {description: string}
-  Exams: undefined
-  AddExam: undefined
+  Guide: undefined;
 };
 
 export interface PageSwitchTemplateProps {
@@ -35,41 +22,7 @@ export interface PageSwitchTemplateProps {
   children: JSX.Element;
 }
 
-export interface HomePageProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
+export interface DefaultPageProps {
+  navigation: NativeStackNavigationProp<RootStackParamList, any>;
 }
 
-export interface LogInPageProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, "LogIn">;
-}
-
-export interface MainProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Main">;
-}
-
-export interface SignUpPageProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, "SignUp">;
-}
-
-export interface AuthPageProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Auth">;
-}
-
-export interface ExcercisesPageProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Excercises">;
-  route: {
-    params: {
-      searchableText: string;
-    };
-  };
-}
-
-export interface NewFlashcardPageProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, "NewFlashcard">;
-}
-
-export interface IStylesVariable {
-  LogoSize: number;
-  ButtonSize: DimensionValue | undefined;
-  InputSize: number;
-}

@@ -1,8 +1,9 @@
 import React, {useCallback, useContext, useEffect} from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomePageProps, PageSwitchTemplateProps, RootStackParamList } from '../../types/types';
+import { DefaultPageProps, PageSwitchTemplateProps, RootStackParamList } from '../../types/types';
 import HomeScreen from '../HomeScreen/HomeScreen';
+import GuideScreen from '../GuideScreen/GuideScreen';
 
 
 
@@ -16,7 +17,7 @@ const PageSwitchTemplate: React.FC<PageSwitchTemplateProps> = ({ navigation, chi
   return React.cloneElement(children, {pageSwitcher: pageChanger });
 };
 
-export const HomePage: React.FC<HomePageProps> = ({ navigation }) => {
+export const HomePage: React.FC<DefaultPageProps> = ({ navigation }) => {
   return (
     <PageSwitchTemplate navigation={navigation}>
           <HomeScreen/>
@@ -24,6 +25,14 @@ export const HomePage: React.FC<HomePageProps> = ({ navigation }) => {
 
   );
 }
+export const GuidePage: React.FC<DefaultPageProps> = ({ navigation }) => {
+    return (
+      <PageSwitchTemplate navigation={navigation}>
+            <GuideScreen/>
+      </PageSwitchTemplate>
+  
+    );
+  }
 
 // export const PostByCategoryPage: React.FC<any> = ({ navigation, route }) => {
 //   const { category } = route.params;
@@ -44,7 +53,8 @@ function AppNavigator() {
            headerShown: false
          }}
        >
-         <Stack.Screen name="Home" component={HomePage} options={{headerBackVisible: false, gestureEnabled: false}}  />
+         <Stack.Screen name="Home" component={HomePage} />
+         <Stack.Screen name="Guide" component={GuidePage} />
        </Stack.Navigator>
     </NavigationContainer>
   );
