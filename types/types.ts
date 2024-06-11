@@ -12,6 +12,7 @@ export type PageChangerParams = {
 export type RootStackParamList = {
   Home: undefined;
   Guide: undefined;
+  SetUp: undefined;
 };
 
 export interface PageSwitchTemplateProps {
