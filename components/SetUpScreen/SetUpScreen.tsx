@@ -36,12 +36,12 @@ function SetUpScreen({pageSwitcher}: any) {
         }
       };
 
-    const addConnectionHandle = () =>{
+    const addConnectionHandle = async() =>{
         setIsVisible(false)
-        let url = SSLCertificate?'https://':'http://'+webSiteURL
-        storeData(url, APIKey)
+        let url = (SSLCertificate?'https://':'http://')+webSiteURL
+        await storeData(url, APIKey)
         setIsConfigured(true)
-        setTimeout(()=>{pageSwitcher('Home')}, 6000)
+        setTimeout(()=>{pageSwitcher('Main')}, 6000)
     }
   return (
     <SafeAreaView
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'flex-start',
         padding:20,
+        marginBottom:50,
     },
     text:{
         fontSize:20,

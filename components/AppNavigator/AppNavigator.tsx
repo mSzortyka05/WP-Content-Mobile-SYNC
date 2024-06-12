@@ -5,6 +5,7 @@ import { DefaultPageProps, PageSwitchTemplateProps, RootStackParamList } from '.
 import HomeScreen from '../HomeScreen/HomeScreen';
 import GuideScreen from '../GuideScreen/GuideScreen';
 import SetUpScreen from '../SetUpScreen/SetUpScreen';
+import MainScreen from '../MainScreen/MainScreen';
 
 
 
@@ -43,7 +44,14 @@ export const GuidePage: React.FC<DefaultPageProps> = ({ navigation }) => {
   
     );
   }
-
+  export const MainPage: React.FC<DefaultPageProps> = ({ navigation }) => {
+    return (
+      <PageSwitchTemplate navigation={navigation}>
+            <MainScreen/>
+      </PageSwitchTemplate>
+  
+    );
+  }
 // export const PostByCategoryPage: React.FC<any> = ({ navigation, route }) => {
 //   const { category } = route.params;
 //   return (
@@ -66,6 +74,7 @@ function AppNavigator() {
          <Stack.Screen name="Home" component={HomePage} />
          <Stack.Screen name="Guide" component={GuidePage} />
          <Stack.Screen name="SetUp" component={SetUpPage} />
+         <Stack.Screen name="Main" component={MainPage} />
        </Stack.Navigator>
     </NavigationContainer>
   );
