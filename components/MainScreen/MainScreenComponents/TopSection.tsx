@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 import { View, Text, SafeAreaView, StyleSheet, ImageBackground, Image, TouchableOpacity, Platform } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,10 +7,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface TopSectionProps{
     pressEventHandler: any
+    pageSwitcher: any
 }
 
 
-function TopSection({pressEventHandler}: TopSectionProps) {
+function TopSection({pressEventHandler, pageSwitcher}: TopSectionProps) {
+    const clearAsyncStorage = async () => {
+        try {
+          await AsyncStorage.clear();
+          Alert.alert('Success', 'AsyncStorage has been cleared!');
+        } catch (e) {
+          // handle error
+          Alert.alert('Error', 'Failed to clear AsyncStorage');
+          console.error(e);
+        }
+      };
+
 
   return (
     <View
@@ -18,6 +30,9 @@ function TopSection({pressEventHandler}: TopSectionProps) {
     >
         <TouchableOpacity
             style={styles.mainCard}
+            onPress={()=>{
+                pageSwitcher('Sites')
+            }}
         >
             <ImageBackground
                 source={require('./../../../assets/background-texture.jpg')}
@@ -47,6 +62,7 @@ function TopSection({pressEventHandler}: TopSectionProps) {
         >
             <TouchableOpacity
                 style={[styles.smallBox, {backgroundColor:'#000'}]}
+                onPress={()=>{clearAsyncStorage()}}
             >
                 <Text
                     style={[styles.whiteText, {textAlign:'center'}]}

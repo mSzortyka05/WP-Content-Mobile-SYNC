@@ -14,6 +14,7 @@ export type RootStackParamList = {
   Guide: undefined;
   SetUp: undefined;
   Main: undefined;
+  Sites: undefined
 };
 
 export interface PageSwitchTemplateProps {

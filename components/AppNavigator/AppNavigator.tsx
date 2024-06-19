@@ -6,6 +6,7 @@ import HomeScreen from '../HomeScreen/HomeScreen';
 import GuideScreen from '../GuideScreen/GuideScreen';
 import SetUpScreen from '../SetUpScreen/SetUpScreen';
 import MainScreen from '../MainScreen/MainScreen';
+import SitesListScreen from '../SitesListScreen/SitesListScreen';
 
 
 
@@ -44,6 +45,15 @@ export const GuidePage: React.FC<DefaultPageProps> = ({ navigation }) => {
   
     );
   }
+  export const SitesListPage: React.FC<DefaultPageProps> = ({ navigation }) => {
+    return (
+      <PageSwitchTemplate navigation={navigation}>
+            <SitesListScreen/>
+      </PageSwitchTemplate>
+  
+    );
+  }
+
   export const MainPage: React.FC<DefaultPageProps> = ({ navigation }) => {
     return (
       <PageSwitchTemplate navigation={navigation}>
@@ -75,6 +85,7 @@ function AppNavigator() {
          <Stack.Screen name="Guide" component={GuidePage} />
          <Stack.Screen name="SetUp" component={SetUpPage} />
          <Stack.Screen name="Main" component={MainPage} />
+         <Stack.Screen name="Sites" component={SitesListPage} />
        </Stack.Navigator>
     </NavigationContainer>
   );

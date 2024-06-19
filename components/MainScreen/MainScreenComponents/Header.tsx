@@ -4,7 +4,11 @@ import { View, Text, SafeAreaView, StyleSheet, ImageBackground, Image, Touchable
 import { Octicons } from '@expo/vector-icons';
 
 
-function Header() {
+interface HeaderProps{
+    text: string
+}
+
+function Header({text}:HeaderProps) {
 
   return (
     <View
@@ -23,7 +27,7 @@ function Header() {
         <Text
             style={styles.greatingText}
         >
-            Welcome back!
+            {text}
         </Text>
         <TouchableOpacity
             style={{position:'absolute', right:30, top:25}}

@@ -2,18 +2,35 @@ import LottieView from 'lottie-react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, SafeAreaView, View, Text, Modal, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Header from './MainScreenComponents/Header';
-import TopSection from './MainScreenComponents/TopSection';
 import ConnectButton from '../SetUpScreen/SetUpScreenComponents/ConnectButton';
+import Header from '../MainScreen/MainScreenComponents/Header';
+import ListPosition from './SitesListScreenComponents/ListPosition';
+import { AntDesign } from '@expo/vector-icons';
 import Footer from '../Footer/Footer';
 
-
-function MainScreen({pageSwitcher}: any) {
+function SitesListScreen({pageSwitcher}: any) {
     const [isVisible, setIsVisible] = useState<boolean>(false)
 
     const [webSiteURL, setWebSiteURL] = useState<string>('')
     const [APIKey, setAPIKey] = useState<string>('')
     const [SSLCertificate, setSSLCertificate] = useState<boolean>(false)
+
+    const [keys, setKeys] = useState<any>([]);
+
+    const fetchKeys = async () => {
+        console.log('connecting...')
+            try {
+                const allKeys = await AsyncStorage.getAllKeys();
+                setKeys(allKeys);
+            } catch (e) {
+                console.error(e);
+            }
+        console.log('fetched')
+        };
+
+    useEffect(() => {
+        fetchKeys();
+    }, []);
 
     useEffect(()=>{
         validateForm()
@@ -35,15 +52,13 @@ function MainScreen({pageSwitcher}: any) {
         setIsVisible(false)
         let url = (SSLCertificate?'https://':'http://')+webSiteURL
         await storeData(url, APIKey)
+        fetchKeys()
     }
     
   return (
     <SafeAreaView
         style={styles.mainContainer}
     >
-        <ScrollView
-            style={styles.scroll}
-        >
             <Modal
             visible={isVisible}
             animationType="slide"
@@ -99,11 +114,34 @@ function MainScreen({pageSwitcher}: any) {
             <View
                 style={styles.mainContainer}
             >
-                <Header text={'Welcome back!'}/>
-                <TopSection pressEventHandler={()=>{setIsVisible(true)}} pageSwitcher={pageSwitcher}/>
+                <Header text={'Your websites'}/>
+                <ScrollView
+                    style={styles.scroll}
+                >
+                    <View
+                        style={styles.listContainer}
+                    >
+                        {keys.map((key:string, index: number)=>(
+                            <ListPosition key={index} url={key} pageSwitcher={pageSwitcher} fetchKeys={fetchKeys}/>
+                        ))}
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={()=>{
+                                setIsVisible(true)
+                            }}
+                        >
+                            <Text
+                                style={styles.buttonText}
+                            >
+                                Connect another site
+                            </Text>
+                            <AntDesign name="pluscircle" size={20} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{height: 200}}></View>
+                </ScrollView>
             </View>
-        </ScrollView>
-        <Footer pageSwitcher={pageSwitcher} />
+            <Footer pageSwitcher={pageSwitcher} />
     </SafeAreaView>
   );
 }
@@ -184,8 +222,32 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-around',
         padding:20,
+    },
+    listContainer:{
+        width:'100%',
+        paddingTop:50,
+        display:'flex',
+        alignItems:'center',
+
+    },
+    button:{
+        marginTop:50,
+        width:'90%',
+        height:60,
+        borderRadius:20,
+        backgroundColor:'#9952D8',
+        display:'flex',
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    buttonText:{
+        color:'#fff',
+        fontWeight:'700',
+        fontSize:18,
+        paddingRight:20,
     }
 })
 
 
-export default MainScreen;
+export default SitesListScreen;
