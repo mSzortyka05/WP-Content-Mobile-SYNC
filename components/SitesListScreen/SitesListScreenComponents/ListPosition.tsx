@@ -18,6 +18,8 @@ function ListPosition({url, pageSwitcher, fetchKeys}:ListPositionProps) {
 
   const [deletingModalVisible, setDeletingModalVisible] = useState<boolean>(false)
 
+
+  
   // useEffect(() => {
   //   const fetchFavicon = async () => {
   //     try {
@@ -51,7 +53,7 @@ function ListPosition({url, pageSwitcher, fetchKeys}:ListPositionProps) {
   return (
     <Pressable
       style={styles.mainContainer}
-      onPress={()=>{pageSwitcher()}}
+      onPress={()=>{pageSwitcher('Manager', {url: url})}}
       onLongPress={()=>{setDeletingModalVisible(true)}}
     >
       <Modal

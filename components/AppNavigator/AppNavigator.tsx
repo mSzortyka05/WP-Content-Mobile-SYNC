@@ -7,6 +7,7 @@ import GuideScreen from '../GuideScreen/GuideScreen';
 import SetUpScreen from '../SetUpScreen/SetUpScreen';
 import MainScreen from '../MainScreen/MainScreen';
 import SitesListScreen from '../SitesListScreen/SitesListScreen';
+import ManagerScreen from '../ManagerScreen/ManagerScreen';
 
 
 
@@ -62,6 +63,15 @@ export const GuidePage: React.FC<DefaultPageProps> = ({ navigation }) => {
   
     );
   }
+  export const ManagerPage: React.FC<any> = ({ navigation, route }) => {
+    const {url} = route.params;
+
+    return (
+      <PageSwitchTemplate navigation={navigation}>
+            <ManagerScreen url={url}/>
+      </PageSwitchTemplate>
+    );
+  }
 // export const PostByCategoryPage: React.FC<any> = ({ navigation, route }) => {
 //   const { category } = route.params;
 //   return (
@@ -86,6 +96,7 @@ function AppNavigator() {
          <Stack.Screen name="SetUp" component={SetUpPage} />
          <Stack.Screen name="Main" component={MainPage} />
          <Stack.Screen name="Sites" component={SitesListPage} />
+         <Stack.Screen name="Manager" component={ManagerPage} />
        </Stack.Navigator>
     </NavigationContainer>
   );
