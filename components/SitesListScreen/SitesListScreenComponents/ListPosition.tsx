@@ -5,6 +5,7 @@ import axios from 'axios';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { encode } from 'base64-arraybuffer';
 
 interface ListPositionProps{
     url: string
@@ -13,31 +14,31 @@ interface ListPositionProps{
 }
 
 function ListPosition({url, pageSwitcher, fetchKeys}:ListPositionProps) {
-  const [favicon, setFavicon] = useState<string | null>(null);
+  const [favicon, setFavicon] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [deletingModalVisible, setDeletingModalVisible] = useState<boolean>(false)
 
 
-  
-  // useEffect(() => {
-  //   const fetchFavicon = async () => {
-  //     try {
-  //       const response = await fetch(`http://localhost:3001/fetch-favicon?url=${encodeURIComponent(url)}`);
-  //       if (response.ok) {
-  //         const blob = await response.blob();
-  //         const objectURL = URL.createObjectURL(blob);
-  //         setFavicon(objectURL);
-  //       } else {
-  //         throw new Error('Failed to fetch favicon');
-  //       }
-  //     } catch (error: any) {
-  //       setError(error.message);
-  //     }
-  //   };
+  const fetchFavicon = async (url: string): Promise<string> => {
+    const faviconUrl = new URL('/favicon.ico', url).toString();
+    const response = await axios.get(faviconUrl, { responseType: 'arraybuffer' });
+    const base64 = encode(response.data);
+    return `data:image/x-icon;base64,${base64}`;
+  };
 
-  //   fetchFavicon();
-  // }, [url]);
+  
+  useEffect(() => {
+    const loadFavicon = async () => {
+      try {
+        const faviconData = await fetchFavicon(url);
+        setFavicon(faviconData);
+      } catch (error) {
+        console.error('Error fetching favicon:', error);
+      }}
+
+      loadFavicon()
+  }, [url]);
 
   const deleteByKey = async(key:string) =>{
     try {
@@ -139,7 +140,8 @@ function ListPosition({url, pageSwitcher, fetchKeys}:ListPositionProps) {
         <View
           style={styles.iconContainer}
         >
-          <MaterialCommunityIcons name="web-check" size={32} color="white" />
+          {favicon?<Image source={{uri: favicon}} style={{width:32,height:32,}}/>:
+          <MaterialCommunityIcons name="web-check" size={32} color="white" />}
         </View>
         <Text
           style={styles.title}

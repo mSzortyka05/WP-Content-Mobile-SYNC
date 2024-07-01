@@ -42,7 +42,7 @@ function ManagerScreen({pageSwitcher, url}: any) {
                 >
                     {webSiteURL.split('//')[1]}
                 </Text>
-                <View
+                <TouchableOpacity
                     style={styles.button}
                 >
                     <Text
@@ -50,29 +50,29 @@ function ManagerScreen({pageSwitcher, url}: any) {
                     >
                         Add new post 
                     </Text>
-                    <MaterialIcons name="post-add" size={32} color="#9952D8" />
-                </View>
-                <View
+                    <MaterialIcons name="post-add" size={32} color="lightgreen" />
+                </TouchableOpacity>
+                <TouchableOpacity
                     style={styles.button}
                 >
                     <Text
                         style={styles.buttonText}
                     >
-                        Edit post 
+                        Edit posts
                     </Text>
                     <Feather name="edit" size={24} color="#9952D8" />
-                </View>
-                <View
+                </TouchableOpacity>
+                <TouchableOpacity
                     style={styles.button}
                 >
                     <Text
                         style={styles.buttonText}
                     >
-                        Edit post 
+                        Delete posts
                     </Text>
                     <MaterialIcons name="delete-sweep" size={32} color="red" />
-                </View>
-                <View
+                </TouchableOpacity>
+                <TouchableOpacity
                     style={styles.statsContainer}
                 >
                     <Text
@@ -80,7 +80,7 @@ function ManagerScreen({pageSwitcher, url}: any) {
                     >
                         Stats
                     </Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </ScrollView>
         <Footer pageSwitcher={pageSwitcher} />
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     },
     button:{
         width:'90%',
-        height:80,
+        height:60,
         borderRadius:20,
         backgroundColor:'#fff',
         shadowColor: "#000",
@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
 
         elevation: 16,
         marginTop:20,
-        marginBottom:20,
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
