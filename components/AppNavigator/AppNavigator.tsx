@@ -8,6 +8,7 @@ import SetUpScreen from '../SetUpScreen/SetUpScreen';
 import MainScreen from '../MainScreen/MainScreen';
 import SitesListScreen from '../SitesListScreen/SitesListScreen';
 import ManagerScreen from '../ManagerScreen/ManagerScreen';
+import PostCreatorScreen from '../PostCreatorScreen/PostCreatorScreen';
 
 
 
@@ -72,14 +73,17 @@ export const GuidePage: React.FC<DefaultPageProps> = ({ navigation }) => {
       </PageSwitchTemplate>
     );
   }
-// export const PostByCategoryPage: React.FC<any> = ({ navigation, route }) => {
-//   const { category } = route.params;
-//   return (
-//     <PageSwitchTemplate navigation={navigation}>
-//       <PostByCategoryScreen category={category}/>
-//     </PageSwitchTemplate>
-//   );
-// };
+
+  export const PostCreatorPage: React.FC<any> = ({ navigation, route }) => {
+    const {url} = route.params;
+
+    return (
+      <PageSwitchTemplate navigation={navigation}>
+            <PostCreatorScreen url={url}/>
+      </PageSwitchTemplate>
+    );
+  }
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -97,6 +101,7 @@ function AppNavigator() {
          <Stack.Screen name="Main" component={MainPage} />
          <Stack.Screen name="Sites" component={SitesListPage} />
          <Stack.Screen name="Manager" component={ManagerPage} />
+         <Stack.Screen name="PostCreator" component={PostCreatorPage} />
        </Stack.Navigator>
     </NavigationContainer>
   );

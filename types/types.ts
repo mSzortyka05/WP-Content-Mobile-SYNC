@@ -16,6 +16,7 @@ export type RootStackParamList = {
   Main: undefined;
   Sites: undefined;
   Manager: {url: string};
+  PostCreator: {url: string};
 };
 
 export interface PageSwitchTemplateProps {

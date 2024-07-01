@@ -6,26 +6,47 @@ import Footer from '../Footer/Footer';
 import Header from '../MainScreen/MainScreenComponents/Header';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { BarChart, LineChart, PieChart, PopulationPyramid } from "react-native-gifted-charts";
+import axios from 'axios';
 
 
 
 function ManagerScreen({pageSwitcher, url}: any) {
     const [webSiteURL, setWebSiteURL] = useState<string>(url)
     const [APIKey, setAPIKey] = useState<string>()
+    const [data, setData] = useState<any>([{value: 10}, {value: 20}])
+    
 
-    useEffect(() =>{
-        const getAPIKey = async() =>{
-            const value = await AsyncStorage.getItem(url)
-            if(value){
-                setAPIKey(value)
-            }
-            else{
-                setAPIKey('')
+    const fetchNumberOfPost = async() =>{
+        try{
+            const response = await axios.get(url+'/wp-json/mobile-sync/get-post-count',{
+                headers: {
+                    'X-API-KEY': APIKey
+                }
+            })
+            if(response){
+                setData([ {value: Number(response.data.count-1)}, {value: Number(response.data.count)}])
+                console.log(response.data.count)
             }
         }
-        getAPIKey()    
-    },[])
+        catch(error:any){
+            console.error(error)
+        }
+        
+    }
+    const getAPIKey = async() =>{
+        const value = await AsyncStorage.getItem(url)
+        if(value){
+            setAPIKey(value)
+        }
+        else{
+            setAPIKey('')
+        }
+    }
 
+    useEffect(()=>{
+        getAPIKey().then(()=>{fetchNumberOfPost()})
+    },[])
   return (
     <SafeAreaView
         style={styles.mainContainer}
@@ -44,6 +65,9 @@ function ManagerScreen({pageSwitcher, url}: any) {
                 </Text>
                 <TouchableOpacity
                     style={styles.button}
+                    onPress={()=>{
+                        pageSwitcher('PostCreator', {url: url})
+                    }}
                 >
                     <Text
                         style={styles.buttonText}
@@ -72,7 +96,7 @@ function ManagerScreen({pageSwitcher, url}: any) {
                     </Text>
                     <MaterialIcons name="delete-sweep" size={32} color="red" />
                 </TouchableOpacity>
-                <TouchableOpacity
+                <View
                     style={styles.statsContainer}
                 >
                     <Text
@@ -80,7 +104,14 @@ function ManagerScreen({pageSwitcher, url}: any) {
                     >
                         Stats
                     </Text>
-                </TouchableOpacity>
+                </View>
+                <Text
+                    style={styles.statsText}
+                >
+                    number of posts 
+                </Text>
+                <LineChart data = {data} areaChart width={320} height={250} color1='#9952D8' isAnimated={true} thickness={7} hideDataPoints={true}/>
+                <View style={{height:150, width:'100%'}}></View>
             </View>
         </ScrollView>
         <Footer pageSwitcher={pageSwitcher} />
