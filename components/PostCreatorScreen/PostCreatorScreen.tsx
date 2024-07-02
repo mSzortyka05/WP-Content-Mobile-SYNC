@@ -37,7 +37,9 @@ function PostCreatorScreen({pageSwitcher, url}: any) {
           'X-API-KEY': APIKey
         }
     })
-    console.log(response)
+    if(response){
+        pageSwitcher('Manager', {url: url})
+    }
     
   }
 

@@ -1,20 +1,22 @@
 import LottieView from 'lottie-react-native';
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, SafeAreaView, View, Text, Modal, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Dimensions, StyleSheet, SafeAreaView, View, Text, Modal, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Footer from '../Footer/Footer';
 import Header from '../MainScreen/MainScreenComponents/Header';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
 import { BarChart, LineChart, PieChart, PopulationPyramid } from "react-native-gifted-charts";
 import axios from 'axios';
+import PostListElement from './ManagerScreenComponents/PostListElement';
 
 
 
 function ManagerScreen({pageSwitcher, url}: any) {
     const [webSiteURL, setWebSiteURL] = useState<string>(url)
     const [APIKey, setAPIKey] = useState<string>()
-    const [data, setData] = useState<any>([{value: 10}, {value: 20}])
+    const [data, setData] = useState<any>(null)
+    const [posts, setPosts] = useState<any>()
+    const [deleting, setDeleting] = useState<boolean>(false);
     
 
     const fetchNumberOfPost = async() =>{
@@ -44,9 +46,28 @@ function ManagerScreen({pageSwitcher, url}: any) {
         }
     }
 
+    const getAllPosts = async() =>{
+        const response = await axios.get(url+'/wp-json/mobile-sync/get-posts', {
+            headers: {
+                'X-API-KEY': APIKey
+            }
+        })
+        if(response){
+            setPosts(response.data)
+            console.log(response.data)
+        }
+    }
+
     useEffect(()=>{
-        getAPIKey().then(()=>{fetchNumberOfPost()})
+       getAPIKey()
     },[])
+
+    useEffect(()=>{
+        if(APIKey){
+            fetchNumberOfPost()
+            getAllPosts()
+        }
+    },[APIKey])
   return (
     <SafeAreaView
         style={styles.mainContainer}
@@ -76,26 +97,7 @@ function ManagerScreen({pageSwitcher, url}: any) {
                     </Text>
                     <MaterialIcons name="post-add" size={32} color="lightgreen" />
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                >
-                    <Text
-                        style={styles.buttonText}
-                    >
-                        Edit posts
-                    </Text>
-                    <Feather name="edit" size={24} color="#9952D8" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                >
-                    <Text
-                        style={styles.buttonText}
-                    >
-                        Delete posts
-                    </Text>
-                    <MaterialIcons name="delete-sweep" size={32} color="red" />
-                </TouchableOpacity>
+                
                 <View
                     style={styles.statsContainer}
                 >
@@ -110,7 +112,19 @@ function ManagerScreen({pageSwitcher, url}: any) {
                 >
                     number of posts 
                 </Text>
-                <LineChart data = {data} areaChart width={320} height={250} color1='#9952D8' isAnimated={true} thickness={7} hideDataPoints={true}/>
+                {data?<LineChart data = {data} areaChart width={320} height={250} color1='#9952D8' isAnimated={true} thickness={7} hideDataPoints={true}/>:<ActivityIndicator size={'large'} color={'#9952D8'}/>}
+                <Text
+                    style={styles.statsText}
+                >
+                    All Posts
+                </Text>
+                {
+                    posts?posts.map((post:any, index:number)=>{
+                        return(
+                            <PostListElement key={index} title={post.title} id={post.id} apiKey={APIKey} url={url} refreshHandle={()=>{getAllPosts()}}/>
+                        )
+                    }):<ActivityIndicator size={'large'} color={'#9952D8'}/>                    
+                }
                 <View style={{height:150, width:'100%'}}></View>
             </View>
         </ScrollView>
@@ -236,7 +250,7 @@ const styles = StyleSheet.create({
         fontWeight:'700',
         padding:20,
         color:'gray',
-    }
+    },
 })
 
 
